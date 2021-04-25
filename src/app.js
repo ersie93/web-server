@@ -1,6 +1,9 @@
-const path = require('path')
-const express = require('express')
-const hbs = require('hbs')
+require('dotenv').config();
+const path = require('path');
+const express = require('express');
+const hbs = require('hbs');
+const geocode = require('./utils/geocode');
+const forecast = require('./utils/forecast');
 
 const app = express()
 
@@ -24,10 +27,36 @@ app.get('', (req, res) => {
     })
 })
 
+app.get('/weather', (req, res) => {
+    if(!req.query.address){
+        return res.send({
+            error: 'you must provide an address'
+        })
+    } else {
+
+        geocode(req.query.address, (error, {latitude, longitude, location} = {}) =>{
+            if(error){
+                return res.send({error});
+            }
+            const latLong = `${latitude},${longitude}`;
+            forecast(latLong, (error, forecastData) => {
+                if(error){
+                    return res.send({error});
+                }
+                res.send({
+                    location,
+                    forecast: forecastData,
+                    address: req.query.address
+                })
+            })
+        })
+    }
+})
+
 app.get('*', (req, res) => {
     res.render('404', {
         title: '404',
-        name: 'Andrew Mead',
+        name: 'Ryan Erswell',
         errorMessage: 'Page not found.'
     })
 })
