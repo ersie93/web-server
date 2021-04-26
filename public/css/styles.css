@@ -34,3 +34,23 @@ h1 {
 .portrait {
     width: 250px;
 }
+
+a {
+    text-decoration: none;
+}
+
+input {
+    border: 2px solid #cccccc;
+    border-radius: 5px 0 0 5px;
+    padding: 8px;
+    margin: 0;
+}
+
+button {
+    color: white;
+    background-color: #aaaaaa;
+    cursor: pointer;
+    border: 2px solid #aaaaaa;
+    border-radius: 0 5px 5px 0;
+    padding: 8px;
+}
